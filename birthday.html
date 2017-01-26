@@ -1,0 +1,359 @@
+<html>
+
+<head>
+
+<style>
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	flex-direction: row;
+	height: 100%;
+	width: 100%;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+.row {
+	height: 80%;
+	margin-top: 2%;
+	width: 100%;
+	max-width: 100%;
+	overflow-x: hidden;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	flex: 1 1 auto;
+}
+
+.row .carousel{
+	height: 100%;
+	max-width: 78%;
+	flex: 0 0 78%;
+	overflow-x: hidden;
+	display: flex;
+	flex-direction: row;
+}
+
+.row #left .triangle {
+	margin-top: 110px;
+	margin-left: 10px;
+	width: 0;
+	height: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid white;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+}
+
+.row #left {
+	border-top-left-radius: 12px;
+	border-bottom-left-radius: 12px;
+}
+
+.row #right .triangle {
+	margin-top: 110px;
+	margin-left: 30px;
+	width: 0;
+	height: 0;
+	border-left: 10px solid white;
+	border-right: 10px solid transparent;
+	border-top: 10px solid transparent;
+	border-bottom: 10px solid transparent;
+}
+
+.row div {
+	background: #333;
+	height: 100%;
+	flex: 0 0 9%;
+}
+.row #left:hover, .row #right:hover {
+	cursor:pointer;
+}
+.row #right {
+	border-top-right-radius: 12px;
+	border-bottom-right-radius: 12px;
+}
+
+.row .carousel .tile {
+	transition: order .25s linear;
+	flex: 0 0 33.2%;
+	margin-left: 1px;
+	margin-right: 1px;
+	border-top: 2px solid black;
+	border-bottom: 2px solid black;
+}
+
+.row .carousel.animate .tile.left {
+	position: relative;
+	animation: LEFT .25s linear;
+}
+
+.row .carousel.animate .tile.right {
+	position: relative;
+	animation: RIGHT .25s linear;
+}
+.row .carousel .tile.red {
+	background-color: #884422;
+}
+
+.row .carousel .tile.blue {
+	background-color: #224488;
+}
+
+.row .carousel .tile.green {
+	background-color: #248842;
+}
+
+@keyframes LEFT {
+	from {left: 0%;}
+	to {left: -33%;}
+}
+
+@keyframes RIGHT {
+	from {right: 33%;}
+	to {right: 0%;}
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="row">
+
+  <div id="left">
+
+  	<div class="triangle"></div>
+
+  </div>
+
+  <div class="carousel">
+
+	<div class="tile red"></div>
+
+	<div class="tile blue"></div>
+
+	<div class="tile green"></div>
+
+	<div class="tile red"></div>
+
+	<div class="tile blue"></div>
+
+	<div class="tile green"></div>
+
+  </div>
+
+
+  <div id="right">
+
+  	<div class="triangle"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+var removeClass = function(el, className){
+	if (el.classList)
+		el.classList.remove(className);
+	else
+		el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+};
+
+var addClass = function(el, className){
+
+	if (el.classList)
+    	el.classList.add(className);
+    else
+    	el.className += ' ' + className;
+};
+
+var initializeOrder = function() {
+
+	var tiles = document.querySelectorAll(".tile");
+
+	for(var i = 0; i < tiles.length; i++) {
+
+		tiles[i].style.order = i.toString();
+
+	}
+
+};
+
+var sortByOrder = function(a,b){
+
+	return (parseInt(a.style.order) - parseInt(b.style.order));
+
+};
+
+var getSortedTiles = function(){
+
+	var unsortedTiles = [];
+
+	var tiles = document.querySelectorAll(".tile");
+
+	for(var i = 0; i < tiles.length; i++){
+
+		unsortedTiles.push(tiles[i]);
+	}
+
+	var sortedTiles = [];
+
+	return unsortedTiles.sort(sortByOrder);
+
+}
+
+var reorderItems = function(direction) {
+	//left
+	var shift = -1;
+	var dir = "left";
+
+	//right
+	if(direction) {
+
+		shift = 1;
+		dir = "right";
+
+	} 
+
+	var tiles = getSortedTiles();
+
+	for(var i = 0; i < tiles.length; i++){
+
+		tiles[i].style.order = parseInt(parseInt(tiles[i].style.order) + parseInt(shift));
+
+	}
+
+	var firstTile = tiles[0];
+
+	var secondTile = tiles[1];
+
+	var thirdTile = tiles[2];
+
+	var lastTile = tiles[tiles.length-1];
+
+
+	//right
+	if(direction){
+
+		firstTile.style.order = 1;
+
+		secondTile.style.order = 2;
+
+		lastTile.style.order = 0;
+
+
+	//left
+	} else {
+
+		firstTile.style.order = parseInt(tiles.length - 1);
+
+		secondTile.style.order = 0;
+
+		thirdTile.style.order = 1;
+
+	}
+
+};
+
+var leftClick = function() {
+
+	var carousel = document.querySelector(".carousel");
+
+	addClass(carousel, "animate");
+
+	var tyl = getSortedTiles();
+
+	for(var i = 0; i < tyl.length; i++){
+
+		addClass(tyl[i], "left");
+
+	}
+
+	setTimeout(function(){
+
+		reorderItems(0);
+
+		removeClass(carousel, "animate");
+
+		ts = document.querySelectorAll(".tile");
+
+		for(var i = 0; i < ts.length; i++){
+
+			removeClass(ts[i], "left");
+
+		}
+
+	}, 250);
+
+};
+
+var rightClick = function() {
+
+	var carousel = document.querySelector(".carousel");
+
+	addClass(carousel, "animate");
+
+	var tyl = getSortedTiles();
+
+	for(var i = 0; i < tyl.length; i++){
+
+		addClass(tyl[i], "right");
+
+	}
+
+	reorderItems(1);
+
+	setTimeout(function(){
+
+		removeClass(carousel, "animate");
+
+		ts = document.querySelectorAll(".tile");
+
+		for(var i = 0; i < ts.length; i++){
+
+			removeClass(ts[i], "right");
+			
+		}
+
+	}, 250);
+
+};
+
+var onReady = function() {
+
+	document.getElementById("left").addEventListener("click", leftClick);
+
+	document.getElementById("right").addEventListener("click", rightClick);
+
+	initializeOrder();
+
+};
+
+var ready = function(fn) {
+
+  if (document.readyState != 'loading'){
+
+    fn();
+
+  } else {
+
+    document.addEventListener('DOMContentLoaded', fn);
+
+  }
+
+};
+
+ready(onReady);
+
+</script>
+
+</body>
+
+</html>
