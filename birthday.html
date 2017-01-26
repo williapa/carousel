@@ -114,8 +114,8 @@ body {
 }
 
 @keyframes RIGHT {
-	from {right: 33%;}
-	to {right: 0%;}
+	from {left: -33%;}
+	to {left: 0%;}
 }
 
 </style>
@@ -270,13 +270,25 @@ var leftClick = function() {
 
 	var tyl = getSortedTiles();
 
+	var clone = tyl[0].cloneNode();
+
+	addClass(clone, "deleteme");
+
+	clone.style.order = tyl.length;
+
+	carousel.appendChild(clone);
+
 	for(var i = 0; i < tyl.length; i++){
 
 		addClass(tyl[i], "left");
 
 	}
 
+	addClass(clone, "left");
+
 	setTimeout(function(){
+
+		document.querySelector(".deleteme").remove();
 
 		reorderItems(0);
 
@@ -302,15 +314,28 @@ var rightClick = function() {
 
 	var tyl = getSortedTiles();
 
+	var clone = tyl[tyl.length-1].cloneNode();
+
+	addClass(clone, "deleteme");
+
+	clone.style.order = -1;
+
+	carousel.insertBefore(clone, carousel.firstChild);
+
 	for(var i = 0; i < tyl.length; i++){
 
 		addClass(tyl[i], "right");
 
 	}
 
-	reorderItems(1);
+	addClass(clone, "right");
+
 
 	setTimeout(function(){
+
+		document.querySelector(".deleteme").remove();
+
+		reorderItems(1);
 
 		removeClass(carousel, "animate");
 
