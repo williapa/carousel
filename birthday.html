@@ -28,6 +28,7 @@ body {
 	flex-wrap: nowrap;
 	flex: 1 1 50%;
 }
+
 .centered {
 	justify-content: space-around;
 }
@@ -55,7 +56,7 @@ body {
 	background-color: #333;
 }
 
-.row .carousel{
+.row .carousel {
 	height: 100%;
 	max-width: 78%;
 	flex: 0 0 78%;
@@ -65,8 +66,8 @@ body {
 }
 
 .row #left .triangle {
-	margin-top: 110px;
-	margin-left: 10px;
+	margin-top: 200px;
+	margin-left: 42px;
 	width: 0;
 	height: 0;
 	border-left: 10px solid transparent;
@@ -82,8 +83,8 @@ body {
 }
 
 .row #right .triangle {
-	margin-top: 110px;
-	margin-left: 30px;
+	margin-top: 200px;
+	margin-left: 42px;
 	width: 0;
 	height: 0;
 	border-left: 10px solid white;
@@ -97,9 +98,11 @@ body {
 	height: 100%;
 	flex: 0 0 9%;
 }
+
 .row #left:hover, .row #right:hover {
 	cursor:pointer;
 }
+
 .row #right {
 	border-top-right-radius: 12px;
 	border-left: 60px solid #333;
@@ -133,7 +136,6 @@ body {
 .row .carousel.animate .tile.shift2 {
 	position: relative;
 	animation: LEFTTWO .25s linear;
-
 }
 
 .row .carousel.animate .tile.shift3 {
@@ -149,7 +151,6 @@ body {
 .row .carousel.animate .tile.shift5 {
 	position: relative;
 	animation: LEFTFIVE .25s linear;
-
 }
 
 .row .carousel.animate .tile.shift-1 {
@@ -165,13 +166,11 @@ body {
 .row .carousel.animate .tile.shift-3 {
 	position: relative;
 	animation: RIGHTTHREE .25s linear;
-
 }
 
 .row .carousel.animate .tile.shift-4 {
 	position: relative;
 	animation: RIGHTFOUR .25s linear;
-
 }
 
 .row .carousel.animate .tile.shift-5 {
@@ -179,9 +178,20 @@ body {
 	animation: RIGHTFIVE .25s linear;
 }
 
-
 .row .carousel .tile.red {
 	background-color: #884422;
+}
+
+.row .carousel .tile.sepia {
+	filter: sepia(100%);
+}
+
+.row .carousel .tile.bright {
+	filter: brightness(120%);
+}
+
+.row .carousel .tile.contrast {
+	filter:contrast(200%);
 }
 
 .row .carousel .tile.blue {
@@ -190,6 +200,12 @@ body {
 
 .row .carousel .tile.green {
 	background-color: #248842;
+}
+
+.tile p {
+	color: white;
+	text-align: center;
+	margin-top: 8rem;
 }
 
 @keyframes LEFT {
@@ -201,46 +217,57 @@ body {
 	from {left: -33%;}
 	to {left: 0%;}
 }
+
 @keyframes RIGHTONE {
 	from {left: -33%;}
 	to {left: 0%;}
 }
+
 @keyframes LEFTONE {
 	from {left: 0%;}
 	to {left: -33%;}
 }
+
 @keyframes RIGHTTWO {
 	from {left: -66%;}
 	to {left: 0%;}
 }
+
 @keyframes LEFTTWO {
 	from {left: 0%;}
 	to {left: -66%;}
 }
+
 @keyframes RIGHTTHREE {
 	from {left: -100%;}
 	to {left: 0%;}
 }
+
 @keyframes LEFTTHREE {
 	from {left: 0%;}
 	to {left: -100%;}
 }
+
 @keyframes RIGHTFOUR {
 	from {left: -133%;}
 	to {left: 0%;}
 }
+
 @keyframes LEFTFOUR {
 	from {left: 0%;}
 	to {left: -133%;}
 }
+
 @keyframes RIGHTFIVE {
 	from {left: -166%;}
 	to {left: 0%;}
 }
+
 @keyframes LEFTFIVE {
 	from {left: 0%;}
 	to {left: -166%;}
 }
+
 </style>
 
 </head>
@@ -256,13 +283,12 @@ body {
   </div>
 
   <div class="carousel">
-
-	<div class="tile red"><p>1</p></div>
-
-	<div class="tile blue"><p>2</p></div>
-
-	<div class="tile green"><p>3</p></div>
-
+	<img class="tile sepia" src="rb.png"/>
+	<img class="tile bright" src="rb.png"/>
+	<img class="tile contrast" src="rb.png"/>
+	<img class="tile sepia" src="rb.png"/>
+	<img class="tile bright" src="rb.png"/>
+	<img class="tile contrast" src="rb.png"/>
   </div>
 
   <div id="right">
@@ -284,10 +310,12 @@ body {
 <script>
 
 var removeClass = function(el, className){
+
 	if (el.classList)
 		el.classList.remove(className);
 	else
 		el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+
 };
 
 var addClass = function(el, className){
@@ -296,6 +324,7 @@ var addClass = function(el, className){
     	el.classList.add(className);
     else
     	el.className += ' ' + className;
+
 };
 
 var initializeOrder = function() {
@@ -391,8 +420,6 @@ var rightClick = function() {
 
 	var carousel = document.querySelector(".carousel");
 
-	addClass(carousel, "animate");
-
 	var tyl = getSortedTiles();
 
 	var clone = tyl[0].cloneNode();
@@ -410,6 +437,9 @@ var rightClick = function() {
 	}
 
 	addClass(clone, "left");
+
+	//trigger animation via parent class
+	addClass(carousel, "animate");
 
 	setTimeout(function(){
 
@@ -449,8 +479,6 @@ var leftClick = function() {
 
 	var carousel = document.querySelector(".carousel");
 
-	addClass(carousel, "animate");
-
 	var tyl = getSortedTiles();
 
 	var clone = tyl[tyl.length-1].cloneNode();
@@ -469,6 +497,8 @@ var leftClick = function() {
 
 	addClass(clone, "right");
 
+	//trigger animation via parent class
+	addClass(carousel, "animate");
 
 	setTimeout(function(){
 
@@ -495,8 +525,9 @@ var leftClick = function() {
 			addClass(document.getElementById("bubble"+document.querySelectorAll("#bubbles div").length), "filled");
 		}
 		else {
-			console.log("old")
+
 			addClass(document.getElementById("bubble"+(--old)), "filled");
+
 		}
 
 
@@ -527,7 +558,6 @@ var centerThisTile = function(bubbleno, from) {
 	}
 
 	//build ghost tiles based on direction/size
-
 	if(shift < 0) {
 
 		ghostsToAdd = Math.abs(shift);
@@ -544,9 +574,7 @@ var centerThisTile = function(bubbleno, from) {
 
 		}
 
-	}
-
-	else {
+	} else {
 
 		ghostsToAdd = shift;
 
@@ -565,19 +593,20 @@ var centerThisTile = function(bubbleno, from) {
 	}
 
 	//animate
-	addClass(carousel, "animate");
-
 	allTiles = document.querySelectorAll(".tile");
 
 	for(var i = 0; i < allTiles.length; i++){
 
 		addClass(allTiles[i], shiftAnimationClass);
+
 	}
+
+	//trigger via parent class
+	addClass(carousel, "animate");
 
 	setTimeout(function(){
 
 		//remove ghost tiles,
-
 		var ghosts = document.querySelectorAll(".deleteme");
 
 		for(var i = 0; i < ghosts.length; i++){
@@ -594,11 +623,10 @@ var centerThisTile = function(bubbleno, from) {
 		for(var i = 0; i < allTiles.length; i++){
 
 			removeClass(allTiles[i], shiftAnimationClass);
+
 		}
 
-
 		//put into new order
-
 		for(var i = 0; i < tiles.length; i++) {
 
 			tiles[startAtZero].style.order = i;
@@ -606,8 +634,6 @@ var centerThisTile = function(bubbleno, from) {
 			startAtZero = (startAtZero+1) % (tiles.length);
 
 		}
-
-
 
 	}, 250);
 
@@ -649,9 +675,65 @@ var addBubbles = function() {
 
 var onReady = function() {
 
-	document.getElementById("left").addEventListener("click", leftClick);
+	document.getElementById("left").addEventListener("click", function(e){
 
-	document.getElementById("right").addEventListener("click", rightClick);
+		if(document.querySelector(".carousel").classList.value.indexOf("animate") !== -1){
+
+			e.preventDefault();
+
+		}
+
+		else {
+
+/*
+			var prev = document.querySelector(".filled");
+
+			removeClass(prev, "filled");
+
+			previous = prev.id.charAt(6);
+
+			targ = (previous - 1);
+
+			if(targ == 0){ targ = (document.querySelectorAll(".tile").length);}
+
+			addClass(document.getElementById("bubble"+targ), "filled");
+
+			centerThisTile(targ, previous);*/
+
+			leftClick();
+		}
+
+	});
+
+	document.getElementById("right").addEventListener("click", function(e){
+
+		if(document.querySelector(".carousel").classList.value.indexOf("animate") !== -1){
+
+			e.preventDefault();
+
+		}
+
+		else {
+
+/*			var prev = document.querySelector(".filled");
+
+			removeClass(prev, "filled");
+
+			previous = prev.id.charAt(6);
+
+			targ = parseInt(parseInt(previous) + 1);
+
+			if(targ == (document.querySelectorAll(".tile").length + 1)){ targ = 1;}
+
+			addClass(document.getElementById("bubble"+targ), "filled");
+
+			centerThisTile(targ, previous);*/
+
+			rightClick();
+
+		}
+
+	});
 
 	initializeOrder();
 
