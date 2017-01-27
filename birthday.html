@@ -10,7 +10,7 @@
 
 body {
 	display: flex;
-	flex-direction: row;
+	flex-direction: column;
 	height: 100%;
 	width: 100%;
 	overflow-x: hidden;
@@ -18,7 +18,7 @@ body {
 }
 
 .row {
-	height: 80%;
+	height: 50%;
 	margin-top: 2%;
 	width: 100%;
 	max-width: 100%;
@@ -26,7 +26,33 @@ body {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: nowrap;
-	flex: 1 1 auto;
+	flex: 1 1 50%;
+}
+.centered {
+	justify-content: space-around;
+}
+
+.row #bubbles {
+	background-color: white;
+	display: flex;
+	flex-direction: row;
+	flex: 0 0 80%;
+	width: 80%;
+	height: 100%;
+	justify-content: space-around;
+}
+
+.row #bubbles div {
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	border: 4px solid #224478;
+	flex: 0 0 auto;
+	background-color: white;
+}
+
+.row #bubbles div.filled {
+	background-color: #333;
 }
 
 .row .carousel{
@@ -51,6 +77,7 @@ body {
 
 .row #left {
 	border-top-left-radius: 12px;
+	border-right: 60px solid #333;
 	border-bottom-left-radius: 12px;
 }
 
@@ -75,6 +102,7 @@ body {
 }
 .row #right {
 	border-top-right-radius: 12px;
+	border-left: 60px solid #333;
 	border-bottom-right-radius: 12px;
 }
 
@@ -96,6 +124,62 @@ body {
 	position: relative;
 	animation: RIGHT .25s linear;
 }
+
+.row .carousel.animate .tile.shift1 {
+	position: relative;
+	animation: LEFTONE .25s linear;
+}
+
+.row .carousel.animate .tile.shift2 {
+	position: relative;
+	animation: LEFTTWO .25s linear;
+
+}
+
+.row .carousel.animate .tile.shift3 {
+	position: relative;
+	animation: LEFTTHREE .25s linear;
+}
+
+.row .carousel.animate .tile.shift4 {
+	position: relative;
+	animation: LEFTFOUR .25s linear;
+}
+
+.row .carousel.animate .tile.shift5 {
+	position: relative;
+	animation: LEFTFIVE .25s linear;
+
+}
+
+.row .carousel.animate .tile.shift-1 {
+	position: relative;
+	animation: RIGHTONE .25s linear;
+}
+
+.row .carousel.animate .tile.shift-2 {
+	position: relative;
+	animation: RIGHTTWO .25s linear;
+}
+
+.row .carousel.animate .tile.shift-3 {
+	position: relative;
+	animation: RIGHTTHREE .25s linear;
+
+}
+
+.row .carousel.animate .tile.shift-4 {
+	position: relative;
+	animation: RIGHTFOUR .25s linear;
+
+}
+
+.row .carousel.animate .tile.shift-5 {
+	position: relative;
+	animation: RIGHTFIVE .25s linear;
+}
+
+
 .row .carousel .tile.red {
 	background-color: #884422;
 }
@@ -117,7 +201,46 @@ body {
 	from {left: -33%;}
 	to {left: 0%;}
 }
-
+@keyframes RIGHTONE {
+	from {left: -33%;}
+	to {left: 0%;}
+}
+@keyframes LEFTONE {
+	from {left: 0%;}
+	to {left: -33%;}
+}
+@keyframes RIGHTTWO {
+	from {left: -66%;}
+	to {left: 0%;}
+}
+@keyframes LEFTTWO {
+	from {left: 0%;}
+	to {left: -66%;}
+}
+@keyframes RIGHTTHREE {
+	from {left: -100%;}
+	to {left: 0%;}
+}
+@keyframes LEFTTHREE {
+	from {left: 0%;}
+	to {left: -100%;}
+}
+@keyframes RIGHTFOUR {
+	from {left: -133%;}
+	to {left: 0%;}
+}
+@keyframes LEFTFOUR {
+	from {left: 0%;}
+	to {left: -133%;}
+}
+@keyframes RIGHTFIVE {
+	from {left: -166%;}
+	to {left: 0%;}
+}
+@keyframes LEFTFIVE {
+	from {left: 0%;}
+	to {left: -166%;}
+}
 </style>
 
 </head>
@@ -134,26 +257,27 @@ body {
 
   <div class="carousel">
 
-	<div class="tile red"></div>
+	<div class="tile red"><p>1</p></div>
 
-	<div class="tile blue"></div>
+	<div class="tile blue"><p>2</p></div>
 
-	<div class="tile green"></div>
-
-	<div class="tile red"></div>
-
-	<div class="tile blue"></div>
-
-	<div class="tile green"></div>
+	<div class="tile green"><p>3</p></div>
 
   </div>
-
 
   <div id="right">
 
   	<div class="triangle"></div>
 
   </div>
+
+</div>
+
+<div class="row centered">
+
+	<div id="bubbles">
+
+	</div>
 
 </div>
 
@@ -207,11 +331,12 @@ var getSortedTiles = function(){
 
 	return unsortedTiles.sort(sortByOrder);
 
-}
+};
 
 var reorderItems = function(direction) {
 	//left
 	var shift = -1;
+
 	var dir = "left";
 
 	//right
@@ -262,7 +387,7 @@ var reorderItems = function(direction) {
 
 };
 
-var leftClick = function() {
+var rightClick = function() {
 
 	var carousel = document.querySelector(".carousel");
 
@@ -302,11 +427,25 @@ var leftClick = function() {
 
 		}
 
+		var old = document.querySelector(".filled").id.charAt(6);
+
+		removeClass(document.querySelector(".filled"), "filled");
+
+		if(old >= ts.length){
+
+			addClass(document.getElementById("bubble1"), "filled");
+
+		} else {
+
+			addClass(document.getElementById("bubble"+(++old)), "filled");
+
+		}
+
 	}, 250);
 
 };
 
-var rightClick = function() {
+var leftClick = function() {
 
 	var carousel = document.querySelector(".carousel");
 
@@ -347,7 +486,164 @@ var rightClick = function() {
 			
 		}
 
+		var old = document.querySelector(".filled").id.charAt(6);
+
+		removeClass(document.querySelector(".filled"), "filled");
+
+		if(old == 1){
+
+			addClass(document.getElementById("bubble"+document.querySelectorAll("#bubbles div").length), "filled");
+		}
+		else {
+			console.log("old")
+			addClass(document.getElementById("bubble"+(--old)), "filled");
+		}
+
+
 	}, 250);
+
+};
+
+var centerThisTile = function(bubbleno, from) {
+
+	var carousel = document.querySelector(".carousel");
+
+	var tiles = document.querySelectorAll(".tile");
+
+	var orderedTiles = getSortedTiles();
+
+	var startAtZero = bubbleno - 2;
+
+	var shift = bubbleno - from;
+
+	var shiftAnimationClass = "shift"+shift;
+
+	console.log(shiftAnimationClass);
+
+	if(startAtZero < 0) {
+
+		startAtZero = tiles.length + startAtZero;
+
+	}
+
+	//build ghost tiles based on direction/size
+
+	if(shift < 0) {
+
+		ghostsToAdd = Math.abs(shift);
+
+		for(var i = ghostsToAdd; i > 0; i--){
+
+			var clone = orderedTiles[orderedTiles.length-i].cloneNode();
+
+			addClass(clone, "deleteme");
+
+			clone.style.order = (0-ghostsToAdd);
+
+			carousel.appendChild(clone);
+
+		}
+
+	}
+
+	else {
+
+		ghostsToAdd = shift;
+
+		for(var i = 0; i < ghostsToAdd; i++){
+
+			var clone = orderedTiles[i].cloneNode();
+
+			addClass(clone, "deleteme");
+
+			clone.style.order = (i + orderedTiles.length);
+
+			carousel.appendChild(clone);
+
+		}
+
+	}
+
+	//animate
+	addClass(carousel, "animate");
+
+	allTiles = document.querySelectorAll(".tile");
+
+	for(var i = 0; i < allTiles.length; i++){
+
+		addClass(allTiles[i], shiftAnimationClass);
+	}
+
+	setTimeout(function(){
+
+		//remove ghost tiles,
+
+		var ghosts = document.querySelectorAll(".deleteme");
+
+		for(var i = 0; i < ghosts.length; i++){
+
+			ghosts[i].remove();
+
+		}
+
+		//remove animation classes
+		removeClass(carousel, "animate");
+
+		allTiles = document.querySelectorAll(".tile");
+
+		for(var i = 0; i < allTiles.length; i++){
+
+			removeClass(allTiles[i], shiftAnimationClass);
+		}
+
+
+		//put into new order
+
+		for(var i = 0; i < tiles.length; i++) {
+
+			tiles[startAtZero].style.order = i;
+
+			startAtZero = (startAtZero+1) % (tiles.length);
+
+		}
+
+
+
+	}, 250);
+
+};
+
+var addBubbles = function() {
+
+	var bubbles = document.getElementById("bubbles");
+
+	var tiles = document.querySelectorAll(".tile");
+
+	for(var i = 1; i <= tiles.length; i++){
+
+		var bubble = document.createElement("div");
+
+		bubble.id = ("bubble"+i);
+
+		bubble.addEventListener("click", function(event){
+
+			var prev = document.querySelector(".filled");
+
+			removeClass(prev, "filled");
+
+			console.log(event.target.id.charAt(6));
+
+			addClass(event.target, "filled");
+
+			centerThisTile(event.target.id.charAt(6), prev.id.charAt(6));
+
+		});
+
+		bubbles.appendChild(bubble);
+
+	}
+
+	addClass(document.getElementById("bubble2"), "filled");
 
 };
 
@@ -358,6 +654,8 @@ var onReady = function() {
 	document.getElementById("right").addEventListener("click", rightClick);
 
 	initializeOrder();
+
+	addBubbles();
 
 };
 
