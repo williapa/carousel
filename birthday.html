@@ -110,7 +110,7 @@ body {
 }
 
 .row .carousel .tile {
-	transition: order .25s linear;
+	transition: order .25s ease-in-out;
 	flex: 0 0 33.2%;
 	margin-left: 1px;
 	margin-right: 1px;
@@ -120,62 +120,62 @@ body {
 
 .row .carousel.animate .tile.left {
 	position: relative;
-	animation: LEFT .25s linear;
+	animation: LEFT .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.right {
 	position: relative;
-	animation: RIGHT .25s linear;
+	animation: RIGHT .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.shift1 {
 	position: relative;
-	animation: LEFTONE .25s linear;
+	animation: LEFTONE .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.shift2 {
 	position: relative;
-	animation: LEFTTWO .25s linear;
+	animation: LEFTTWO .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.shift3 {
 	position: relative;
-	animation: LEFTTHREE .25s linear;
+	animation: LEFTTHREE .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.shift4 {
 	position: relative;
-	animation: LEFTFOUR .25s linear;
+	animation: LEFTFOUR .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.shift5 {
 	position: relative;
-	animation: LEFTFIVE .25s linear;
+	animation: LEFTFIVE .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.shift-1 {
 	position: relative;
-	animation: RIGHTONE .25s linear;
+	animation: RIGHTONE .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.shift-2 {
 	position: relative;
-	animation: RIGHTTWO .25s linear;
+	animation: RIGHTTWO .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.shift-3 {
 	position: relative;
-	animation: RIGHTTHREE .25s linear;
+	animation: RIGHTTHREE .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.shift-4 {
 	position: relative;
-	animation: RIGHTFOUR .25s linear;
+	animation: RIGHTFOUR .25s ease-in-out;
 }
 
 .row .carousel.animate .tile.shift-5 {
 	position: relative;
-	animation: RIGHTFIVE .25s linear;
+	animation: RIGHTFIVE .25s ease-in-out;
 }
 
 .row .carousel .tile.red {
@@ -283,12 +283,19 @@ body {
   </div>
 
   <div class="carousel">
+  
 	<img class="tile sepia" src="rb.png"/>
+
 	<img class="tile bright" src="rb.png"/>
+
 	<img class="tile contrast" src="rb.png"/>
+
 	<img class="tile sepia" src="rb.png"/>
+
 	<img class="tile bright" src="rb.png"/>
+
 	<img class="tile contrast" src="rb.png"/>
+
   </div>
 
   <div id="right">
@@ -549,8 +556,6 @@ var centerThisTile = function(bubbleno, from) {
 
 	var shiftAnimationClass = "shift"+shift;
 
-	console.log(shiftAnimationClass);
-
 	if(startAtZero < 0) {
 
 		startAtZero = tiles.length + startAtZero;
@@ -656,8 +661,6 @@ var addBubbles = function() {
 			var prev = document.querySelector(".filled");
 
 			removeClass(prev, "filled");
-
-			console.log(event.target.id.charAt(6));
 
 			addClass(event.target, "filled");
 
