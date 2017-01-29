@@ -369,182 +369,9 @@ var getSortedTiles = function(){
 
 };
 
-var reorderItems = function(direction) {
-	//left
-	var shift = -1;
-
-	var dir = "left";
-
-	//right
-	if(direction) {
-
-		shift = 1;
-		dir = "right";
-
-	} 
-
-	var tiles = getSortedTiles();
-
-	for(var i = 0; i < tiles.length; i++){
-
-		tiles[i].style.order = parseInt(parseInt(tiles[i].style.order) + parseInt(shift));
-
-	}
-
-	var firstTile = tiles[0];
-
-	var secondTile = tiles[1];
-
-	var thirdTile = tiles[2];
-
-	var lastTile = tiles[tiles.length-1];
-
-
-	//right
-	if(direction){
-
-		firstTile.style.order = 1;
-
-		secondTile.style.order = 2;
-
-		lastTile.style.order = 0;
-
-
-	//left
-	} else {
-
-		firstTile.style.order = parseInt(tiles.length - 1);
-
-		secondTile.style.order = 0;
-
-		thirdTile.style.order = 1;
-
-	}
-
-};
-
-var rightClick = function() {
-
-	var carousel = document.querySelector(".carousel");
-
-	var tyl = getSortedTiles();
-
-	var clone = tyl[0].cloneNode();
-
-	addClass(clone, "deleteme");
-
-	clone.style.order = tyl.length;
-
-	carousel.appendChild(clone);
-
-	for(var i = 0; i < tyl.length; i++){
-
-		addClass(tyl[i], "left");
-
-	}
-
-	addClass(clone, "left");
-
-	//trigger animation via parent class
-	addClass(carousel, "animate");
-
-	setTimeout(function(){
-
-		document.querySelector(".deleteme").remove();
-
-		reorderItems(0);
-
-		removeClass(carousel, "animate");
-
-		ts = document.querySelectorAll(".tile");
-
-		for(var i = 0; i < ts.length; i++){
-
-			removeClass(ts[i], "left");
-
-		}
-
-		var old = document.querySelector(".filled").id.charAt(6);
-
-		removeClass(document.querySelector(".filled"), "filled");
-
-		if(old >= ts.length){
-
-			addClass(document.getElementById("bubble1"), "filled");
-
-		} else {
-
-			addClass(document.getElementById("bubble"+(++old)), "filled");
-
-		}
-
-	}, 250);
-
-};
-
-var leftClick = function() {
-
-	var carousel = document.querySelector(".carousel");
-
-	var tyl = getSortedTiles();
-
-	var clone = tyl[tyl.length-1].cloneNode();
-
-	addClass(clone, "deleteme");
-
-	clone.style.order = -1;
-
-	carousel.insertBefore(clone, carousel.firstChild);
-
-	for(var i = 0; i < tyl.length; i++){
-
-		addClass(tyl[i], "right");
-
-	}
-
-	addClass(clone, "right");
-
-	//trigger animation via parent class
-	addClass(carousel, "animate");
-
-	setTimeout(function(){
-
-		document.querySelector(".deleteme").remove();
-
-		reorderItems(1);
-
-		removeClass(carousel, "animate");
-
-		ts = document.querySelectorAll(".tile");
-
-		for(var i = 0; i < ts.length; i++){
-
-			removeClass(ts[i], "right");
-			
-		}
-
-		var old = document.querySelector(".filled").id.charAt(6);
-
-		removeClass(document.querySelector(".filled"), "filled");
-
-		if(old == 1){
-
-			addClass(document.getElementById("bubble"+document.querySelectorAll("#bubbles div").length), "filled");
-		}
-		else {
-
-			addClass(document.getElementById("bubble"+(--old)), "filled");
-
-		}
-
-
-	}, 250);
-
-};
-
 var centerThisTile = function(bubbleno, from) {
 
-	var carousel = document.querySelector(".carousel");
+
 
 	var tiles = document.querySelectorAll(".tile");
 
@@ -563,6 +390,9 @@ var centerThisTile = function(bubbleno, from) {
 	}
 
 	//build ghost tiles based on direction/size
+
+	var carousel = document.querySelector(".carousel");
+
 	if(shift < 0) {
 
 		ghostsToAdd = Math.abs(shift);
@@ -598,11 +428,15 @@ var centerThisTile = function(bubbleno, from) {
 	}
 
 	//animate
-	allTiles = document.querySelectorAll(".tile");
+	var allTiles = document.querySelectorAll(".tile");
+
+	var buttonheight = document.getElementById("left").offsetHeight;
 
 	for(var i = 0; i < allTiles.length; i++){
 
 		addClass(allTiles[i], shiftAnimationClass);
+
+		allTiles[i].style.height = buttonheight; 
 
 	}
 
@@ -621,24 +455,24 @@ var centerThisTile = function(bubbleno, from) {
 		}
 
 		//remove animation classes
+
+
 		removeClass(carousel, "animate");
 
-		allTiles = document.querySelectorAll(".tile");
-
-		for(var i = 0; i < allTiles.length; i++){
-
-			removeClass(allTiles[i], shiftAnimationClass);
-
-		}
-
 		//put into new order
-		for(var i = 0; i < tiles.length; i++) {
+
+		for(var i = 0; i < tiles.length; i++){
+
+			removeClass(tiles[i], shiftAnimationClass);
 
 			tiles[startAtZero].style.order = i;
 
 			startAtZero = (startAtZero+1) % (tiles.length);
 
 		}
+
+
+
 
 	}, 250);
 
@@ -676,11 +510,11 @@ var addBubbles = function() {
 
 };
 
-var onReady = function() {
+var attachCarouselEvents = function() {
 
 	document.getElementById("left").addEventListener("click", function(e){
 
-		if(document.querySelector(".carousel").classList.value.indexOf("animate") !== -1){
+		if(document.querySelector(".carousel").classList.toString().indexOf("animate") !== -1){
 
 			e.preventDefault();
 
@@ -688,7 +522,7 @@ var onReady = function() {
 
 		else {
 
-/*
+
 			var prev = document.querySelector(".filled");
 
 			removeClass(prev, "filled");
@@ -701,16 +535,15 @@ var onReady = function() {
 
 			addClass(document.getElementById("bubble"+targ), "filled");
 
-			centerThisTile(targ, previous);*/
+			centerThisTile(targ, previous);
 
-			leftClick();
 		}
 
 	});
 
 	document.getElementById("right").addEventListener("click", function(e){
 
-		if(document.querySelector(".carousel").classList.value.indexOf("animate") !== -1){
+		if(document.querySelector(".carousel").classList.toString().indexOf("animate") !== -1){
 
 			e.preventDefault();
 
@@ -718,7 +551,7 @@ var onReady = function() {
 
 		else {
 
-/*			var prev = document.querySelector(".filled");
+			var prev = document.querySelector(".filled");
 
 			removeClass(prev, "filled");
 
@@ -730,9 +563,21 @@ var onReady = function() {
 
 			addClass(document.getElementById("bubble"+targ), "filled");
 
-			centerThisTile(targ, previous);*/
+			centerThisTile(targ, previous);
 
-			rightClick();
+		}
+
+	});
+
+	window.addEventListener("resize", function(){
+
+		var tiles = document.querySelectorAll(".tile");
+
+		var leftHeight = document.getElementById("left").offsetHeight;
+
+		for(var i = 0; i < tiles.length; i++){
+
+			tiles[i].style.height = leftHeight;
 
 		}
 
@@ -758,7 +603,7 @@ var ready = function(fn) {
 
 };
 
-ready(onReady);
+ready(attachCarouselEvents);
 
 </script>
 
