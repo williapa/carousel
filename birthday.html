@@ -116,6 +116,10 @@ body {
 	margin-right: 1px;
 	border-top: 2px solid black;
 	border-bottom: 2px solid black;
+	/* to prevent hilighting on fast clicking of left or right buttons */
+	-webkit-user-select: none; /* Chrome/Safari */        
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+ */
 }
 
 .row .carousel.animate .tile.left {
@@ -153,6 +157,32 @@ body {
 	animation: LEFTFIVE .25s ease-in-out;
 }
 
+.row .carousel.animate .tile.shift6 {
+	position: relative;
+	animation: LEFTSIX .25s ease-in-out;
+}
+
+.row .carousel.animate .tile.shift7 {
+	position: relative;
+	animation: LEFTSEVEN .25s ease-in-out;
+}
+
+.row .carousel.animate .tile.shift8 {
+	position: relative;
+	animation: LEFTEIGHT .25s ease-in-out;
+}
+
+.row .carousel.animate .tile.shift9 {
+	position: relative;
+	animation: LEFTNINE .25s ease-in-out;
+}
+
+.row .carousel.animate .tile.shift10 {
+	position: relative;
+	animation: LEFTTEN .25s ease-in-out;
+}
+
+
 .row .carousel.animate .tile.shift-1 {
 	position: relative;
 	animation: RIGHTONE .25s ease-in-out;
@@ -176,6 +206,31 @@ body {
 .row .carousel.animate .tile.shift-5 {
 	position: relative;
 	animation: RIGHTFIVE .25s ease-in-out;
+}
+
+.row .carousel.animate .tile.shift-6 {
+	position: relative;
+	animation: RIGHTSIX .25s ease-in-out;
+}
+
+.row .carousel.animate .tile.shift-7 {
+	position: relative;
+	animation: RIGHTSEVEN .25s ease-in-out;
+}
+
+.row .carousel.animate .tile.shift-8 {
+	position: relative;
+	animation: RIGHTEIGHT .25s ease-in-out;
+}
+
+.row .carousel.animate .tile.shift-9 {
+	position: relative;
+	animation: RIGHTNINE .25s ease-in-out;
+}
+
+.row .carousel.animate .tile.shift-10 {
+	position: relative;
+	animation: RIGHTTEN .25s ease-in-out;
 }
 
 .row .carousel .tile.red {
@@ -268,6 +323,55 @@ body {
 	to {left: -166%;}
 }
 
+@keyframes RIGHTSIX {
+	from {left: -200%;}
+	to {left: 0%;}
+}
+
+@keyframes LEFTSIX {
+	from {left: 0%;}
+	to {left: -200%;}
+}
+
+@keyframes RIGHTSEVEN {
+	from {left: -233%;}
+	to {left: 0%;}
+}
+
+@keyframes LEFTSEVEN {
+	from {left: 0%;}
+	to {left: -233%;}
+}
+
+@keyframes RIGHTEIGHT {
+	from {left: -266%;}
+	to {left: 0%;}
+}
+
+@keyframes LEFTEIGHT {
+	from {left: 0%;}
+	to {left: -266%;}
+}
+
+@keyframes RIGHTNINE {
+	from {left: -300%;}
+	to {left: 0%;}
+}
+
+@keyframes LEFTNINE {
+	from {left: 0%;}
+	to {left: -300%;}
+}
+
+@keyframes RIGHTTEN {
+	from {left: -333%;}
+	to {left: 0%;}
+}
+
+@keyframes LEFTTEN {
+	from {left: 0%;}
+	to {left: -333%;}
+}
 </style>
 
 </head>
@@ -283,8 +387,6 @@ body {
   </div>
 
   <div class="carousel">
-  
-	<img class="tile sepia" src="rb.png"/>
 
 	<img class="tile bright" src="rb.png"/>
 
@@ -295,6 +397,16 @@ body {
 	<img class="tile bright" src="rb.png"/>
 
 	<img class="tile contrast" src="rb.png"/>
+
+	<img class="tile sepia" src="rb.png"/>
+
+	<img class="tile bright" src="rb.png"/>
+
+	<img class="tile contrast" src="rb.png"/>
+
+	<img class="tile sepia" src="rb.png"/>
+
+	<img class="tile bright" src="rb.png"/>
 
   </div>
 
@@ -371,8 +483,6 @@ var getSortedTiles = function(){
 
 var centerThisTile = function(bubbleno, from) {
 
-
-
 	var tiles = document.querySelectorAll(".tile");
 
 	var orderedTiles = getSortedTiles();
@@ -390,7 +500,6 @@ var centerThisTile = function(bubbleno, from) {
 	}
 
 	//build ghost tiles based on direction/size
-
 	var carousel = document.querySelector(".carousel");
 
 	if(shift < 0) {
@@ -455,12 +564,9 @@ var centerThisTile = function(bubbleno, from) {
 		}
 
 		//remove animation classes
-
-
 		removeClass(carousel, "animate");
 
 		//put into new order
-
 		for(var i = 0; i < tiles.length; i++){
 
 			removeClass(tiles[i], shiftAnimationClass);
@@ -470,9 +576,6 @@ var centerThisTile = function(bubbleno, from) {
 			startAtZero = (startAtZero+1) % (tiles.length);
 
 		}
-
-
-
 
 	}, 250);
 
@@ -498,7 +601,7 @@ var addBubbles = function() {
 
 			addClass(event.target, "filled");
 
-			centerThisTile(event.target.id.charAt(6), prev.id.charAt(6));
+			centerThisTile(event.target.id.substring(6), prev.id.substring(6));
 
 		});
 
@@ -527,7 +630,7 @@ var attachCarouselEvents = function() {
 
 			removeClass(prev, "filled");
 
-			previous = prev.id.charAt(6);
+			previous = prev.id.substring(6);
 
 			targ = (previous - 1);
 
@@ -555,7 +658,7 @@ var attachCarouselEvents = function() {
 
 			removeClass(prev, "filled");
 
-			previous = prev.id.charAt(6);
+			previous = prev.id.substring(6);
 
 			targ = parseInt(parseInt(previous) + 1);
 
